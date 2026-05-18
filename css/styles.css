@@ -85,10 +85,6 @@ a img {
   height: auto;
 }
 
-.ff-active-pointer path {
-  fill: #a5dc45;
-}
-
 /* Homepage hero section */
 #homepage-hero {
   position: relative;
