@@ -15,4 +15,3 @@
 # AI Disclosure:
 **This section discloses where AI has been used in the project and what the prompt was:** 
 - "ff-" naming convention created ChatGPT using the prompt "Give me some industry-standard ways to seperate bootstrap classes from your own custom classes"
-- The SVG element in the header was edited using ChatGPT to my needs using the prompt "Clean up this svg so I can change the color and other aspects using CSS."

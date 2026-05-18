@@ -197,5 +197,12 @@ a img {
     height: 100vh;
 }
 
+// Map Page
+
+#map {
+    height: 100vh;
+    width: 100%;
+}
+
 // Bootstrap - make sure to import last. Need to modularise imports
 @import "../node_modules/bootstrap/scss/bootstrap";
