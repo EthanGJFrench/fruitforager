@@ -22,6 +22,16 @@ Used for:
 Used for:
 - Interactive map fucntionality.
 
+#### OpenStreetMap
+- Name: OpenStreetMap
+- Source: https://www.openstreetmap.org
+- License: Open Data Commons Open Database License
+- Copyright
+    - Copyright (c) OpenStreetMap contributors
+
+Used for:
+- Providing map tile data and geographic map information used in the interactive map
+
 ### Media Assets
 #### Apple SVG Vector
 - Name: Apple SVG Vector
