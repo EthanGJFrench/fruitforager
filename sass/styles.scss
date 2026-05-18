@@ -113,7 +113,7 @@ a img {
 /* Homepage hero section */
 #homepage-hero {
     position: relative;
-    height: calc(100vh - 60px);
+    height: 100vh;
     overflow: hidden;
 }
 
@@ -163,7 +163,7 @@ a img {
 }
 
 .ff-hero-overlay {
-    color: white;
+    color: $light;
 }
 
 .ff-glow-section {
@@ -187,7 +187,7 @@ a img {
 // Map page styles
 
 #map {
-    height: calc(100vh - 60px);
+    height: 100vh;
     width: 100%;
 }
 
