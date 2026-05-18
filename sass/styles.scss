@@ -110,15 +110,6 @@ a img {
     height: auto;
 }
 
-.ff-active-pointer {
-    -webkit-transform: scale(-1, -1);
-    -moz-transform: scale(-1, -1);
-    -o-transform: scale(-1, -1);
-    transform: scale(1, -1);
-    rotate: calc(90deg);
-}
-
-
 .ff-active-pointer path {
     fill: $primary;
 }
@@ -126,7 +117,7 @@ a img {
 /* Homepage hero section */
 #homepage-hero {
     position: relative;
-    height: calc(100vh - 56px);
+    height: calc(100vh - 60px);
     overflow: hidden;
 }
 
@@ -197,10 +188,10 @@ a img {
     height: 100vh;
 }
 
-// Map Page
+// Map page styles
 
 #map {
-    height: 100vh;
+    height: calc(100vh - 60px);
     width: 100%;
 }
 
