@@ -1,4 +1,7 @@
 export default class InteractiveMap {
+    /**
+     * 
+     */
     constructor() {
         // Init map
         this.map = L.map('map', { zoomControl: false }).setView([-43.532, 172.636], 12);
