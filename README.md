@@ -15,6 +15,7 @@ An html class with a prefix of `ff-` represents a custon class.
 - SCSS is disorginised and needs to be refined/ modularised.
 - Current iteration is only styled mobile devices - not yet responsive.
 - Need to add copyright information in the home-page footer. 
+- The map tree select checkbox options are very small - it needs to be larger.
 
 # AI Disclosure:
 **This section discloses where AI has been used in the project and what the prompt was:** 

@@ -6,3 +6,5 @@ selectAll.addEventListener("change", function() {
         checkbox.checked = selectAll.checked;
     })
 })
+
+// function
