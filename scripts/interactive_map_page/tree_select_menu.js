@@ -11,22 +11,25 @@ export class TreeSelectMenu {
      * 
      * Retrives the selectAllTrees checkbox DOM element.
      * Retrives all of the fruitOption checkbox DOM elements.
-     * Adds toggleSelectAll() eventListenter to selectAllTrees checkbox DOM element. 
+     * Adds tree select functions to relevant DOM elements.
      */
     constructor() {
-        // Get DOM elements
+        // get DOM elements
         this.selectAllTrees = document.getElementById("selectAllTreesCheck")
         this.fruitOptions = document.querySelectorAll(".ff-fruit-option-check")
         this.treeFilterForm = document.getElementById("treeFilterForm")
-
         // add event listeners to DOM elements
         this.selectAllTrees.addEventListener("change", () => {
             this.toggleSelectAll()
         })
-
         this.treeFilterForm.addEventListener("submit", (e) => {
-            e.preventDefault() // prevent page from refreshing
+            // prevent page from refreshing
+            e.preventDefault()
             this.getFormData()
+            // hide select dropdown when submitted
+            const DROPDOWNBUTTON = document.getElementById("treeFilterDropdownBtn")
+            const DROPDOWN = bootstrap.Dropdown.getOrCreateInstance(DROPDOWNBUTTON)
+            DROPDOWN.hide();
         })
     }
 
@@ -45,10 +48,10 @@ export class TreeSelectMenu {
      * @returns {strings[]} An array containing the selected fruit values.
      */
     getFormData() {
-        const formData = new FormData(this.treeFilterForm)
-        const selectedFruit = formData.getAll("fruit")
+        const FORMDATA = new FormData(this.treeFilterForm)
+        const SELECTEDFRUIT = FORMDATA.getAll("fruit")
 
-        console.log(selectedFruit) // temp
-        return selectedFruit
+        console.log(SELECTEDFRUIT) // temp
+        return SELECTEDFRUIT
     }
 }
