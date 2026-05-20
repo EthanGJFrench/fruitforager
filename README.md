@@ -20,4 +20,5 @@ An html class with a prefix of `ff-` represents a custon class.
 
 # AI Disclosure:
 **This section discloses where AI has been used in the project and what the prompt was:** 
-- "ff-" naming convention created ChatGPT using the prompt "Give me some industry-standard ways to seperate bootstrap classes from your own custom classes"
+- "ff-" naming convention was created with the assistance of ChatGPT using the prompt "Give me some industry-standard ways to seperate bootstrap classes from your own custom classes".
+- The TreeSelectMenu getFormData() method was created with the assistance of ChatGPT using the prompt "what are the best ways to retrieve data from HTML forms using JS?"
