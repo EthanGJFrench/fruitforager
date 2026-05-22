@@ -31,13 +31,22 @@ export default class InteractiveMap {
         this.treeSelectMenu.treeFilterForm.addEventListener("submit", (e) => {
             e.preventDefault()
             this.renderTrees()
-            // hide select dropdown when submitted
-            const DROPDOWNBUTTON = document.getElementById("treeFilterDropdownBtn")
-            const DROPDOWN = bootstrap.Dropdown.getOrCreateInstance(DROPDOWNBUTTON)
+            // select dropdown when submitted
+            const DROPDOWN_BUTTON = document.getElementById("treeFilterDropdownBtn")
+            const DROPDOWN = bootstrap.Dropdown.getOrCreateInstance(DROPDOWN_BUTTON)
             DROPDOWN.hide();
         })
 
-        this.treeMarkers = [] 
+        this.treeMarkers = []
+    }
+
+    normaliseString(string) {
+        try {
+            return string.replace(/\s+/g, "").toLowerCase()
+        }
+        catch (error) {
+            console.error(`Cannot normalise ${string} of type ${typeof string}`)
+        }
     }
 
     /**
@@ -50,38 +59,41 @@ export default class InteractiveMap {
      */
     async getGeoJsonPromise() {
         try {
-            const TREEGEOJSON = await fetch("./geojson/tree_mock_data.geojson");
-            return await TREEGEOJSON.json();
+            const TREE_GEOJSON = await fetch("./geojson/tree_mock_data.geojson");
+            return await TREE_GEOJSON.json();
         } catch (error) {
             console.error("Something went wrong - cannot get tree GeoJSON data!");
         }
     }
 
     addTreeToMap(tree) {
-        const [LNG, LAT] = tree.geometry.coordinates;
-        const MARKER = L.marker([LAT, LNG]).addTo(this.map)
+        const [LNG, LAT] = tree.geometry.coordinates; // get tree cordernates
 
-        this.treeMarkers.push(MARKER)
+        const MARKER = L.circleMarker([LAT, LNG], { // add marker to the map
+            radius: 1,
+        }).addTo(this.map)
+
+        this.treeMarkers.push(MARKER) // add marker to list list of markers
     }
 
     async renderTrees() {
-
-        this.treeMarkers.forEach(marker => {
-            this.map.removeLayer(marker);
+    
+        this.treeMarkers.forEach(marker => { // remove existing markers before redrawing map
+            this.map.removeLayer(marker)
         })
-
+        
         const TREEFORMDATA = this.treeSelectMenu.getFormData() // get the tree select form data
-        if (!TREEFORMDATA) { // make form has seleceted trees
+        
+        if (!TREEFORMDATA) { // if there is no form data -> show user an error and return
             console.error('No fruit trees selected!')
-            // show some kind of bootstrap popup/error
             return
         }
 
         const TREEFORMDATANORMALISED = TREEFORMDATA.map(treeOption => treeOption.replace(/\s+/g, "").toLowerCase()) // normalise the data by removing white space and changing all characters to lowercase
         const TREEDATA = await this.getGeoJsonPromise()
 
-        TREEDATA.features.forEach(tree => {
-            const TREECOMMONNAME = tree.properties.CommonName.replace(/\s+/g, "").toLowerCase()
+        TREEDATA.features.forEach(tree => { // Check each tree normalised CommonName property and add tree to map if it exist in formdata
+            const TREECOMMONNAME = tree.properties.CommonName.replace(/\s+/g, "").toLowerCase()  
             if (TREEFORMDATANORMALISED.includes(TREECOMMONNAME)) {
                 this.addTreeToMap(tree)
             }
