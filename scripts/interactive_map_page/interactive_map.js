@@ -50,7 +50,7 @@ export default class InteractiveMap {
      */
     async getGeoJsonPromise() {
         try {
-            const TREEGEOJSON = await fetch("../../geojson/tree_mock_data.geojson");
+            const TREEGEOJSON = await fetch("./geojson/tree_mock_data.geojson");
             return await TREEGEOJSON.json();
         } catch (error) {
             console.error("Something went wrong - cannot get tree GeoJSON data!");
