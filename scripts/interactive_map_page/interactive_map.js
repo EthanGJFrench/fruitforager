@@ -16,7 +16,6 @@ export default class InteractiveMap {
      * Adds toggleSelectAll() eventListenter to selectAllTrees checkbox DOM element.
      */
     constructor() {
-
         this.map = L.map('map', { zoomControl: false }).setView([-43.532, 172.636], 12);
             L.control.zoom({
                 position: 'bottomright'
@@ -89,11 +88,11 @@ export default class InteractiveMap {
             return
         }
 
-        const TREEFORMDATANORMALISED = TREEFORMDATA.map(treeOption => treeOption.replace(/\s+/g, "").toLowerCase()) // normalise the data by removing white space and changing all characters to lowercase
+        const TREEFORMDATANORMALISED = TREEFORMDATA.map(treeOption => this.normaliseString(treeOption)) // normalise the data by removing white space and changing all characters to lowercase
         const TREEDATA = await this.getGeoJsonPromise()
 
         TREEDATA.features.forEach(tree => { // Check each tree normalised CommonName property and add tree to map if it exist in formdata
-            const TREECOMMONNAME = tree.properties.CommonName.replace(/\s+/g, "").toLowerCase()  
+            const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName)  
             if (TREEFORMDATANORMALISED.includes(TREECOMMONNAME)) {
                 this.addTreeToMap(tree)
             }
