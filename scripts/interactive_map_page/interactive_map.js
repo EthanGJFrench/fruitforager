@@ -132,7 +132,7 @@ export default class InteractiveMap {
         }
     
         const ICON = L.icon({ // close zoom
-            iconUrl: `../../assets/svgs/map_icons/${TREECOMMONNAME}.svg`,
+            iconUrl: `./assets/svgs/map_icons/${TREECOMMONNAME}.svg`,
             iconSize: [32, 32],
             iconAnchor: [16, 16]
         })
