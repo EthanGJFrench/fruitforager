@@ -22,8 +22,8 @@ export default class InteractiveMap {
                 position: 'bottomright'
             }).addTo(this.map)
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { // add OpenStreetMap Tiles
-                maxZoom: 15,
-                minZoom: 10,
+                maxZoom: 17,
+                minZoom: 11,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <br> “FruitForager” &copy; 2026 by <a href="https://github.com/EthanGJFrench">Ethan French</a><br> is licensed under <a href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a>.',
             }).addTo(this.map)
         this.map.on("zoomend", () => { // add zoom event listener to the map
@@ -84,7 +84,7 @@ export default class InteractiveMap {
 
             case "apricot":
                 return "orange"
-                
+
             case "crabapple":
                 return "crimson"
 
@@ -117,24 +117,24 @@ export default class InteractiveMap {
         const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName)
 
         // conditionally render markers based on map zoom
-        if (zoom <= 11) { // far zoom
+        if (zoom === 11) { // far zoom
             return L.circleMarker([LAT, LNG], {
-                radius: 2,
+                radius: 1,
                 color: this.getTreeColor(TREECOMMONNAME)
             })
         }
 
-        if (zoom >= 11 && zoom < 14) { // mid zoom
+        if (zoom >= 12 && zoom < 15) { // mid zoom
             return L.circleMarker([LAT, LNG], {
-                radius: 6,
+                radius: 2,
                 color: this.getTreeColor(TREECOMMONNAME)
             })
         }
     
         const ICON = L.icon({ // close zoom
             iconUrl: `./assets/svgs/map_icons/${TREECOMMONNAME}.svg`,
-            iconSize: [32, 32],
-            iconAnchor: [16, 16]
+            iconSize: [26, 26],
+            iconAnchor: [13, 13]
         })
 
         return L.marker([LAT, LNG], {

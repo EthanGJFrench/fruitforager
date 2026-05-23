@@ -145,10 +145,6 @@ a img {
     transform: translateY(0);
   }
 }
-.ff-hero-overlay {
-  color: #f5f5f5;
-}
-
 .ff-glow-section {
   background: radial-gradient(circle at top left, #a5dc45, transparent 30%), radial-gradient(circle at top right, #67e8f9, transparent 30%);
 }
