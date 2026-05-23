@@ -31,13 +31,8 @@ export default class InteractiveMap {
         })
 
         this.treeSelectMenu = new TreeSelectMenu() // tree select menu dom and functionality
-        this.treeSelectMenu.treeFilterForm.addEventListener("submit", (e) => { 
-            e.preventDefault()
-            this.renderTrees()
-            // select dropdown when submitted
-            const DROPDOWN_BUTTON = document.getElementById("treeFilterDropdownBtn")
-            const DROPDOWN = bootstrap.Dropdown.getOrCreateInstance(DROPDOWN_BUTTON)
-            DROPDOWN.hide();
+        this.treeSelectMenu.treeFilterForm.addEventListener("change", () => {
+              this.renderTrees()
         })
 
         this.treeMarkers = [] // stores the information of markers currently rendered on the map  
