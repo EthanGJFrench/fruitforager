@@ -62,17 +62,29 @@ export default class InteractiveMap {
             return await TREE_GEOJSON.json();
         } catch (error) {
             console.error("Something went wrong - cannot get tree GeoJSON data!");
-        }
+        }  
     }
 
     addTreeToMap(tree) {
         const [LNG, LAT] = tree.geometry.coordinates; // get tree cordernates
 
-        const MARKER = L.circleMarker([LAT, LNG], { // add marker to the map
-            radius: 1,
-        }).addTo(this.map)
-
-        this.treeMarkers.push(MARKER) // add marker to list list of markers
+        switch (this.normaliseString(tree.properties.CommonName)) {// add markers based on 
+            case this.normaliseString("apple"): {
+                const MARKER = L.circleMarker([LAT, LNG], { 
+                    radius: 1,
+                    color: "red"
+                }).addTo(this.map)
+                this.treeMarkers.push(MARKER)
+                break
+            }
+            
+            default: {
+                const MARKER = L.circleMarker([LAT, LNG], {
+                    radius: 1,
+                }).addTo(this.map)
+                break
+            }
+        }
     }
 
     async renderTrees() {
