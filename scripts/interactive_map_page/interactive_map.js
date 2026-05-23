@@ -16,18 +16,22 @@ export default class InteractiveMap {
      * Adds toggleSelectAll() eventListenter to selectAllTrees checkbox DOM element.
      */
     constructor() {
-        this.map = L.map('map', { zoomControl: false }).setView([-43.532, 172.636], 12);
+        
+        this.map = L.map('map', { zoomControl: false }).setView([-43.532, 172.636], 12) // create map
             L.control.zoom({
                 position: 'bottomright'
             }).addTo(this.map)
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { // add OpenStreetMap Tiles
                 maxZoom: 15,
                 minZoom: 10,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <br> “FruitForager” &copy; 2026 by <a href="https://github.com/EthanGJFrench">Ethan French</a><br> is licensed under <a href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a>.',
             }).addTo(this.map)
-        
-        this.treeSelectMenu = new TreeSelectMenu()
-        this.treeSelectMenu.treeFilterForm.addEventListener("submit", (e) => {
+        this.map.on("zoomend", () => { // add zoom event listener to the map
+                this.renderTrees()
+        })
+
+        this.treeSelectMenu = new TreeSelectMenu() // tree select menu dom and functionality
+        this.treeSelectMenu.treeFilterForm.addEventListener("submit", (e) => { 
             e.preventDefault()
             this.renderTrees()
             // select dropdown when submitted
@@ -36,13 +40,17 @@ export default class InteractiveMap {
             DROPDOWN.hide();
         })
 
-        this.treeMarkers = []
+        this.treeMarkers = [] // stores the information of markers currently rendered on the map  
+
+        this.renderTrees() // render once on instatiation - prevents bugs when refreshing the page with the treeselect options being selected
     }
 
     normaliseString(string) {
+        
         try {
             return string.replace(/\s+/g, "").toLowerCase()
         }
+        
         catch (error) {
             console.error(`Cannot normalise ${string} of type ${typeof string}`)
         }
@@ -57,15 +65,19 @@ export default class InteractiveMap {
      * @returns {object, else console.error} retruns GeoJSON object with tree information, else console error if data cannot be fetched.
      */
     async getGeoJsonPromise() {
+        
         try {
             const TREE_GEOJSON = await fetch("./geojson/tree_mock_data.geojson");
             return await TREE_GEOJSON.json();
-        } catch (error) {
+        } 
+        
+        catch (error) {
             console.error("Something went wrong - cannot get tree GeoJSON data!");
         }  
     }
 
     getTreeColor(treeType) {
+        
         switch (treeType) {
 
             case "apple":
@@ -73,7 +85,7 @@ export default class InteractiveMap {
 
             case "apricot":
                 return "orange"
-
+                
             case "crabapple":
                 return "crimson"
 
@@ -100,120 +112,68 @@ export default class InteractiveMap {
         }
     }
 
-    addTreeToMap(tree, zoom) {
-        const [LNG, LAT] = tree.geometry.coordinates; // get tree cordernates
+    renderTreeMarker(tree, zoom) {
 
-        switch (this.normaliseString(tree.properties.CommonName)) {// add markers based on 
-            case this.normaliseString("apple"): { // if apple
-                const MARKER = L.circleMarker([LAT, LNG], { 
-                    radius: 3,
-                    color: "red"
-                }).addTo(this.map)
-                this.treeMarkers.push(MARKER)
-                break
-            }
+        const [LNG, LAT] = tree.geometry.coordinates 
+        const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName)
 
-            case this.normaliseString("apricot"): { // if apricot
-                const MARKER = L.circleMarker([LAT, LNG], { 
-                    radius: 3,
-                    color: "orange"
-                }).addTo(this.map)
-                this.treeMarkers.push(MARKER)
-                break
-            }
-
-            case this.normaliseString("crabapple"): { // if crabapple
-                const MARKER = L.circleMarker([LAT, LNG], { 
-                    radius: 3,
-                    color: "crimson"
-                }).addTo(this.map)
-                this.treeMarkers.push(MARKER)
-                break
-            }
-
-            case this.normaliseString("chestnut"): { // if chestnut
-                const MARKER = L.circleMarker([LAT, LNG], { 
-                    radius: 3,
-                    color: "saddlebrown"
-                }).addTo(this.map)
-                this.treeMarkers.push(MARKER)
-                break
-            }
-
-            case this.normaliseString("cherry"): { // if cherry
-                const MARKER = L.circleMarker([LAT, LNG], { 
-                    radius: 3,
-                    color: "deeppink"
-                }).addTo(this.map)
-                this.treeMarkers.push(MARKER)
-                break
-            }
-
-            case this.normaliseString("olive"): { // if olive
-                const MARKER = L.circleMarker([LAT, LNG], { 
-                    radius: 3,
-                    color: "olive"
-                }).addTo(this.map)
-                this.treeMarkers.push(MARKER)
-                break
-            }
-
-            case this.normaliseString("peach"): { // if peach
-                const MARKER = L.circleMarker([LAT, LNG], { 
-                    radius: 3,
-                    color: "blue"
-                }).addTo(this.map)
-                this.treeMarkers.push(MARKER)
-                break
-            }
-
-            case this.normaliseString("pear"): { // if pear
-                const MARKER = L.circleMarker([LAT, LNG], { 
-                    radius: 3,
-                    color: "yellowgreen"
-                }).addTo(this.map)
-                this.treeMarkers.push(MARKER)
-                break
-            }
-
-            case this.normaliseString("plum"): { // if plum
-                const MARKER = L.circleMarker([LAT, LNG], { 
-                    radius: 3,
-                    color: "darkviolet"
-                }).addTo(this.map)
-                this.treeMarkers.push(MARKER)
-                break
-            }
-
-            default: {
-                const MARKER = L.circleMarker([LAT, LNG], {
-                    radius: 3,
-                    color: 'grey'
-                }).addTo(this.map)
-                break
-            }
+        // conditionally render markers based on map zoom
+        if (zoom <= 11) { // far zoom
+            return L.circleMarker([LAT, LNG], {
+                radius: 2,
+                color: this.getTreeColor(TREECOMMONNAME)
+            })
         }
+
+        if (zoom >= 11 && zoom < 14) { // mid zoom
+            return L.circleMarker([LAT, LNG], {
+                radius: 6,
+                color: this.getTreeColor(TREECOMMONNAME)
+            })
+        }
+    
+        const ICON = L.icon({ // close zoom
+            iconUrl: `./`,
+            iconSize: [32, 32],
+            iconAnchor: [16, 16]
+        })
+
+        return L.marker([LAT, LNG], {
+            icon: ICON
+        })
+    }
+
+    addTreeToMap(tree) { 
+        const ZOOM = this.map.getZoom()
+        const MARKER = this.renderTreeMarker(tree, ZOOM)
+        MARKER.treeData = tree
+
+        MARKER.addTo(this.map) // add marker to map
+        this.treeMarkers.push(MARKER) 
     }
 
     async renderTrees() {
-    
-        this.treeMarkers.forEach(marker => { // remove existing markers before redrawing map
+
+        this.treeMarkers.forEach(marker => { // remove old markers before each render
             this.map.removeLayer(marker)
         })
-        
-        const TREEFORMDATA = this.treeSelectMenu.getFormData() // get the tree select form data
-        
-        if (!TREEFORMDATA) { // if there is no form data -> show user an error and return
+        this.treeMarkers = []
+
+        const TREEFORMDATA = this.treeSelectMenu.getFormData() // get current form data
+
+        if (!TREEFORMDATA) { // throw error if no form data
             console.error('No fruit trees selected!')
             return
         }
 
-        const TREEFORMDATANORMALISED = TREEFORMDATA.map(treeOption => this.normaliseString(treeOption)) // normalise the data by removing white space and changing all characters to lowercase
-        const TREEDATA = await this.getGeoJsonPromise()
+        const TREEFORMDATANORMALISED = TREEFORMDATA.map(treeOption => this.normaliseString(treeOption))
 
-        TREEDATA.features.forEach(tree => { // Check each tree normalised CommonName property and add tree to map if it exist in formdata
-            const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName)  
-            if (TREEFORMDATANORMALISED.includes(TREECOMMONNAME)) {
+        const TREEDATA = await this.getGeoJsonPromise() // get and go through each tree in database*
+        TREEDATA.features.forEach(tree => { 
+
+            const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName) // normalise the tree's CommonName value
+
+            if (TREEFORMDATANORMALISED.includes(TREECOMMONNAME)) { // add tree to map if commonname exists in form data
                 this.addTreeToMap(tree)
             }
         })
