@@ -16,14 +16,13 @@ export default class InteractiveMap {
      * Adds toggleSelectAll() eventListenter to selectAllTrees checkbox DOM element.
      */
     constructor() {
-        
         this.map = L.map('map', { zoomControl: false }).setView([-43.532, 172.636], 12) // create map
             L.control.zoom({
                 position: 'bottomright'
             }).addTo(this.map)
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { // add OpenStreetMap Tiles
                 maxZoom: 17,
-                minZoom: 11,
+                minZoom: 12,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <br> “FruitForager” &copy; 2026 by <a href="https://github.com/EthanGJFrench">Ethan French</a><br> is licensed under <a href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a>.',
             }).addTo(this.map)
         this.map.on("zoomend", () => { // add zoom event listener to the map
@@ -39,17 +38,20 @@ export default class InteractiveMap {
                 this.renderTrees()
             }, 0)
         })
+
+        this.map.on('zoomend', () => {
+            console.log('Zoom:', this.map.getZoom());
+        });
+
         this.treeMarkers = [] // stores the information of markers currently rendered on the map  
 
         this.renderTrees() // render once on instatiation - prevents bugs when refreshing the page with the treeselect options being selected
     }
 
     normaliseString(string) {
-        
         try {
             return string.replace(/\s+/g, "").toLowerCase()
         }
-        
         catch (error) {
             console.error(`Cannot normalise ${string} of type ${typeof string}`)
         }
@@ -64,19 +66,16 @@ export default class InteractiveMap {
      * @returns {object, else console.error} retruns GeoJSON object with tree information, else console error if data cannot be fetched.
      */
     async getGeoJsonPromise() {
-        
         try {
             const TREE_GEOJSON = await fetch("./geojson/tree_mock_data.geojson");
             return await TREE_GEOJSON.json();
         } 
-        
         catch (error) {
-            console.error("Something went wrong - cannot get tree GeoJSON data!");
+            console.error("Something went wrong - cannot get tree data!");
         }  
     }
 
     getTreeColor(treeType) {
-        
         switch (treeType) {
 
             case "apple":
@@ -117,29 +116,67 @@ export default class InteractiveMap {
         const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName)
 
         // conditionally render markers based on map zoom
-        if (zoom === 11) { // far zoom
+        if (zoom >= 12 && zoom <= 13) {
             return L.circleMarker([LAT, LNG], {
                 radius: 1,
                 color: this.getTreeColor(TREECOMMONNAME)
             })
         }
 
-        if (zoom >= 12 && zoom < 15) { // mid zoom
+        if (zoom == 14) {
             return L.circleMarker([LAT, LNG], {
                 radius: 2,
                 color: this.getTreeColor(TREECOMMONNAME)
             })
         }
-    
-        const ICON = L.icon({ // close zoom
-            iconUrl: `./assets/svgs/map_icons/${TREECOMMONNAME}.svg`,
-            iconSize: [26, 26],
-            iconAnchor: [13, 13]
-        })
+        
+        if (zoom == 15) {
+            const ICON = L.icon({ // close zoom
+                iconUrl: `./assets/svgs/map_icons/${TREECOMMONNAME}.svg`,
+                iconSize: [18, 18],
+                iconAnchor: [9, 9]
+            })
 
-        return L.marker([LAT, LNG], {
-            icon: ICON
-        })
+            return L.marker([LAT, LNG], {
+                icon: ICON
+            })
+        }
+
+        if (zoom == 15) {
+            const ICON = L.icon({ // close zoom
+                iconUrl: `./assets/svgs/map_icons/${TREECOMMONNAME}.svg`,
+                iconSize: [22, 22],
+                iconAnchor: [11, 11]
+            })
+
+            return L.marker([LAT, LNG], {
+                icon: ICON
+            })
+        }
+
+        if (zoom == 16) {
+            const ICON = L.icon({ // close zoom
+                iconUrl: `./assets/svgs/map_icons/${TREECOMMONNAME}.svg`,
+                iconSize: [28, 28],
+                iconAnchor: [14, 14]
+            })
+
+            return L.marker([LAT, LNG], {
+                icon: ICON
+            })
+        }
+
+        if (zoom == 17) {
+            const ICON = L.icon({ // close zoom
+                iconUrl: `./assets/svgs/map_icons/${TREECOMMONNAME}.svg`,
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            })
+
+            return L.marker([LAT, LNG], {
+                icon: ICON
+            })
+        }
     }
 
     addTreeToMap(tree) { 
