@@ -231,7 +231,7 @@ export default class InteractiveMap {
         MARKER.addTo(this.map) // add marker to map
         this.treeMarkers.push(MARKER) // push marker to the list of markers currently rendered on the map
     }
-
+    
     async renderTrees() {
 
         this.treeMarkers.forEach(marker => { // remove old markers before each render
@@ -248,7 +248,7 @@ export default class InteractiveMap {
 
         const TREEFORMDATANORMALISED = TREEFORMDATA.map(treeOption => this.normaliseString(treeOption))
 
-        const TREEDATA = await this.getGeoJsonPromise() // get and go through each tree in database*
+        const TREEDATA = await this.getGeoJsonPromise() // get and iterate through each tree in dataset
         TREEDATA.features.forEach(tree => { 
 
             const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName) // normalise the tree's CommonName value
