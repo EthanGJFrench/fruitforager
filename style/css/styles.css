@@ -68,12 +68,12 @@ End of CSS reset
 */
 @font-face {
   font-family: "Raleway";
-  src: url("../assets/fonts/Raleway/static/Raleway-Regular.ttf") format(truetype);
+  src: url("../../assets/fonts/Raleway/Raleway-Regular.ttf") format(truetype);
   font-weight: normal;
 }
 @font-face {
   font-family: "Krub";
-  src: url("../assets/fonts/Krub/Krub-Regular.ttf") format(truetype);
+  src: url("../../assets/fonts/Krub/Krub-Regular.ttf") format(truetype);
   font-weight: normal;
 }
 /* Layout & custom SASS */
