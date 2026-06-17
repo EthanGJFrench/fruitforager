@@ -110,6 +110,11 @@ a img {
   max-width: 50px;
 }
 
+footer a, .leaflet-control-attribution a {
+    font-style: italic;
+    text-decoration: underline;
+}
+
 .ff-icon {
     width: 35px;
     height: auto;
