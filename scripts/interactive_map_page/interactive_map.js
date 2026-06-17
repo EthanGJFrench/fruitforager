@@ -133,7 +133,7 @@ export default class InteractiveMap {
         return marker    
     }
 
-    addTreeToMap(tree) { 
+    addTreeToMap(tree) {
         const ZOOM = this.map.getZoom()
         const MARKER = this.renderTreeMarker(tree, ZOOM)
         MARKER.treeData = tree
@@ -159,7 +159,7 @@ export default class InteractiveMap {
         const TREEFORMDATANORMALISED = TREEFORMDATA.map(treeOption => this.normaliseString(treeOption))
 
         const TREEDATA = await this.getGeoJsonPromise() // get and iterate through each tree in dataset
-        TREEDATA.features.forEach(tree => { 
+        TREEDATA.features.forEach(tree => {
 
             const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName) // normalise the tree's CommonName value
 

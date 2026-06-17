@@ -28,12 +28,12 @@ This application uses mock tree data. The mock data matches the same geojson fea
         "Protection": "Subdivision", 
         "TargetFrequency": "Perpetual Use", 
         "IDSRevisionNumber": null, 
-        "Species": "Eucalyptus globulus (Maiden's Gum)", ---Important attribute required to find correct trees---
-        "Genus": "Eucalyptus", ---Important attribute required to find correct trees--- 
+        "Species": "Eucalyptus globulus (Maiden's Gum)",
+        "Genus": "Eucalyptus", 
         "IsHybrid": "No", 
         "IsRare": "No", 
-        "CommonName": "Maiden's Gum", ---Important attribute required to find correct trees--- 
-        "BotanicName": "globulus", ---Important attribute required to find correct trees---
+        "CommonName": "Maiden's Gum",
+        "BotanicName": "globulus", 
         "Variety": null, 
         "Cultivar": null, 
         "SubSpecies": null, 
@@ -42,7 +42,7 @@ This application uses mock tree data. The mock data matches the same geojson fea
         "ObservationDate": 
         "2000-06-21T12:00:00Z", 
         "DiameterAtBreastHeight": 1.1, 
-        "Height": 18.0, ---Want to display this info in tree marker popup---
+        "Height": 18.0,
         "CrownSpread": 12.0, 
         "AssetLongDescription": null, 
         "Comment": null, 
@@ -53,7 +53,7 @@ This application uses mock tree data. The mock data matches the same geojson fea
         "ContractorExternalReference": null, 
         "CreateDate": null, 
         "LastEditDate": "2023-02-16T22:47:26Z" }, 
-        "geometry": { ---Required for placing market on map - specifically the coordinates---.
+        "geometry": {
             "type": "Point", 
             "coordinates": [ 172.570298970250491, -43.598559320163552 ] } }
     ]
