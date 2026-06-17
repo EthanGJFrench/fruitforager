@@ -91,9 +91,9 @@ export default class InteractiveMap {
         </a>
         `
 
-        const MAP_ZOOM = { 
+        const MAP_ZOOM = {
             12: 8, 
-            13: 12, 
+            13: 12,
             14: 18, 
             15: 26, 
             16: 32, 
@@ -119,7 +119,7 @@ export default class InteractiveMap {
 
         marker.bindPopup(MARKER_POPUP_CONTENT, {
             autoClose: false,
-            closeOnClick: false
+            closeOnClick: true
         })
 
         marker.on("click", () => {
