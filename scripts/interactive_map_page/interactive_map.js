@@ -92,12 +92,12 @@ export default class InteractiveMap {
         `
 
         const MAP_ZOOM = {
-            12: 8, 
-            13: 12,
-            14: 18, 
-            15: 26, 
-            16: 32, 
-            17: 40 
+            12: 10, 
+            13: 14,
+            14: 20, 
+            15: 30, 
+            16: 38, 
+            17: 44 
         } 
 
         const SIZE = MAP_ZOOM[zoom]
