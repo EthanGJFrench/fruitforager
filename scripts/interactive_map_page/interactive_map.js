@@ -39,9 +39,9 @@ export default class InteractiveMap {
             }, 0)
         })
 
-        this.map.on('zoomend', () => { // ts - temp
-            console.log('Zoom:', this.map.getZoom());
-        });
+        this.map.on('zoomend', () => { // TEMP!
+            console.log('Zoom:', this.map.getZoom())
+        })
 
         this.treeMarkers = [] // stores the information of markers currently rendered on the map  
         this.renderTrees() // render once on map creation - prevents bugs when refreshing the page with the treeselect options being selected
@@ -74,65 +74,10 @@ export default class InteractiveMap {
         }  
     }
 
-    /**
-     * Gets the marker color for the corresponding fruit tree type.
-     * 
-     * @return {string: marker color, defaults to grey if no tree is found}  
-     */
-    getTreeColor(treeType) {
-        switch (treeType) {
-
-            case "apple":
-                return "red"
-
-            case "apricot":
-                return "orange"
-
-            case "crabapple":
-                return "crimson"
-
-            case "chestnut":
-                return "saddlebrown"
-
-            case "cherry":
-                return "deeppink"
-
-            case "olive":
-                return "olive"
-
-            case "peach":
-                return "blue"
-
-            case "pear":
-                return "yellowgreen"
- 
-            case "plum":
-                return "darkviolet"
-
-            default:
-                return "grey"
-        }
-    }
-
     renderTreeMarker(tree, zoom) {
         const [LNG, LAT] = tree.geometry.coordinates 
         const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName)
 
-        // conditionally render markers based on map zoom
-        if (zoom <= 13) {
-            return L.circleMarker([LAT, LNG], {
-                radius: 1,
-                color: this.getTreeColor(TREECOMMONNAME)
-            })
-        }
-
-        if (zoom === 14) {
-            return L.circleMarker([LAT, LNG], {
-                radius: 2,
-                color: this.getTreeColor(TREECOMMONNAME)
-            })
-        }
-        
         // Render interactive icon marker when zoomed in
         const MARKER_ICON = `./assets/svgs/map_icons/${TREECOMMONNAME}.svg`
         const MARKER_POPUP_CONTENT = 
@@ -145,82 +90,47 @@ export default class InteractiveMap {
             <button class="btn btn-primary bg-gradient">Take me there!</button>
         </a>
         `
-        if (zoom === 15) {
-            const ICON = L.icon({
-                iconUrl: MARKER_ICON,
-                iconSize: [24, 24],
-                iconAnchor: [12, 12],
-                className: "ff-tree-marker-icon"
-            })
-            
-            let marker = L.marker([LAT, LNG], {
-                icon: ICON
-            })
-            
-            marker.bindPopup(MARKER_POPUP_CONTENT, { // add tree popup information
-                autoClose: false,
-                closeOnClick: false
-            })
-            marker.on("click", () => {
-                this.map.panTo(marker.getLatLng())
-                setTimeout(() => { // prevent the popup from opening before the map has panned which causes the popup to close
-                    marker.openPopup()
-                }, 100)
-            })
-            
-            return marker
-        }
 
-        if (zoom === 16) {
-            const ICON = L.icon({ // close zoom
-                iconUrl: MARKER_ICON,
-                iconSize: [36, 36],
-                iconAnchor: [18, 18],
-                className: "ff-tree-marker-icon"
-            })
+        const MAP_ZOOM = { 
+            12: 8, 
+            13: 12, 
+            14: 18, 
+            15: 26, 
+            16: 32, 
+            17: 40 
+        } 
 
-            let marker = L.marker([LAT, LNG], {
-                icon: ICON
-            })
+        const SIZE = MAP_ZOOM[zoom]
 
-            marker.bindPopup(MARKER_POPUP_CONTENT, { // add tree popup information
-                closeOnClick: false
-            })
-            marker.on("click", () => {
-                this.map.panTo(marker.getLatLng())
-                setTimeout(() => { // prevent the popup from opening before the map has panned which causes the popup to close
-                    marker.openPopup()
-                }, 100)
-            })
-            
-            return marker
-        }
+        const ICON = L.divIcon({
+            className: "ff-tree-marker",
+            html: `
+                <div class="tree-marker-wrapper">
+                    <img src="./assets/svgs/map_icons/${TREECOMMONNAME}.svg" />
+                </div>
+            `,
+            iconSize: [SIZE, SIZE],
+            iconAnchor: [SIZE / 2, SIZE / 2]
+        })
 
-        if (zoom === 17) {
-            const ICON = L.icon({ // close zoom
-                iconUrl: `./assets/svgs/map_icons/${TREECOMMONNAME}.svg`,
-                iconSize: [44, 44],
-                iconAnchor: [21, 21],
-                className: "ff-tree-marker-icon"
-            })
+        const marker = L.marker([LAT, LNG], {
+            icon: ICON
+        })
 
-            let marker = L.marker([LAT, LNG], {
-                icon: ICON
-            })
+        marker.bindPopup(MARKER_POPUP_CONTENT, {
+            autoClose: false,
+            closeOnClick: false
+        })
 
-            marker.bindPopup(MARKER_POPUP_CONTENT, { // add tree popup information
-                autoClose: false,
-                closeOnClick: false
-            })
-            marker.on("click", () => {
-                this.map.panTo(marker.getLatLng())
-                setTimeout(() => { // prevent the popup from opening before the map has panned which causes the popup to close
-                    marker.openPopup()
-                }, 100)
-            })
+        marker.on("click", () => {
+            this.map.panTo(marker.getLatLng())
 
-            return marker
-        }
+            setTimeout(() => {
+                marker.openPopup()
+            }, 100)
+        })
+
+        return marker    
     }
 
     addTreeToMap(tree) { 
