@@ -82,6 +82,7 @@ export default class InteractiveMap {
     const MARKER_POPUP_CONTENT = 
         `
         <h3>${tree.properties.CommonName}</h3>
+        <p>${tree.properties.Species}</p>
         <p>Location: ${LAT}, ${LNG}</p>
         <p>Tree age: ${tree.properties.AgeClass}</p>
         <p>Tree height: ${tree.properties.Height}M</p>
