@@ -15,6 +15,7 @@
 - Copyright: 
     - Copyright (c) 2011-2018 Twitter, Inc. 
     - Copyright (c) 2011-2018 The Bootstrap Authors
+
 Used for:
 - Responsive layout and UI elements.
 
@@ -25,6 +26,7 @@ Used for:
 - Copyright:
     - Copyright (c) 2010-2026, Volodymyr Agafonkin
     - Copyright (c) 2010-2011, CloudMade
+
 Used for:
 - Interactive map fucntionality.
 
@@ -34,6 +36,7 @@ Used for:
 - License: Open Data Commons Open Database License
 - Copyright
     - Copyright (c) OpenStreetMap contributors
+
 Used for:
 - Providing map tile data and geographic map information used in the interactive map
 
@@ -44,6 +47,7 @@ Used for:
 - Source: https://www.svgrepo.com/svg/530203/apple
 - License: CC0 License
 - Uploader: SVG Repo
+
 Used for:
 - FruitForager Logo
 
@@ -52,6 +56,7 @@ Used for:
 - Source: https://www.svgrepo.com/svg/526104/play-circle
 - License: CC Attribution License
 - Author: Solar Icons
+
 Used for:
 - Play icon for tutorial video on homepage
 
@@ -60,6 +65,7 @@ Used for:
 - Source: https://www.svgrepo.com/svg/173139/street-map
 - License: CC0 License
 - Uploader: SCG Repo
+
 Used for:
 - Map icon for link to interactive map from homepage
 
@@ -68,6 +74,7 @@ Used for:
 - Source: https://www.svgrepo.com/vectors/apple/
 - License: PD License
 - Author: dstore
+
 Used for:
 - crabapple map icon/ marker for.
 - apple map marker - changed the color from yellow to red.
@@ -77,6 +84,7 @@ Used for:
 - Source: www.svgrepo.com/svg/263306/apricot
 - License: CC0 License
 - Uploader: SVG Repo
+
 Used for:
 - apricot map marker
 
@@ -85,6 +93,7 @@ Used for:
 - Source: https://www.svgrepo.com/svg/400592/peach
 - License: Apache License
 - Author: Mozilla
+
 Used for:
 - peach map marker - change color to be more pink
 
@@ -93,6 +102,7 @@ Used for:
 - Source: www.svgrepo.com/svg/401282/chestnut
 - License: MIT License
 - Author: joypixels
+
 Used for:
 - chestnut map marker
 
@@ -101,6 +111,7 @@ Used for:
 - Source: https://www.svgrepo.com/svg/475183/cherry
 - License: PD License
 - Author: Nanda Pratama
+
 Used for:
 - cherry map marker
 
@@ -109,6 +120,7 @@ Used for:
 - Source: https://www.svgrepo.com/svg/406788/olive
 - License: MIT License
 - Author: Twitter
+
 Used for:
 - Olive map marker
 
@@ -117,6 +129,7 @@ Used for:
 - Source: https://www.svgrepo.com/svg/397725/pear
 - License: Apache License
 - Author: googlefonts
+
 Used for:
 - Pear map marker
 
@@ -125,6 +138,7 @@ Used for:
 - Source: https://www.svgrepo.com/svg/475215/plum
 - License: PD License
 - Author: Nanda Pratama
+
 Used for:
 - Plum map marker
 
@@ -133,6 +147,7 @@ Used for:
 - Source: https://www.pexels.com/photo/the-riverside-market-in-new-zealand-5363175/
 - Author: Partick Rose
 - License URL: https://www.pexels.com/license/
+
 Used for: 
 - Image in the homepage carousel
 
@@ -140,21 +155,24 @@ Used for:
 - Source: https://www.pexels.com/photo/lush-apple-orchard-with-ripening-red-apples-35155442/
 - Author: Jeffry Surianto
 - License URL: https://www.pexels.com/license/
+
 Used for: 
 - Image in the homepage carousel
 
-#### Video
-**Video of hands holding wild berries in a natiral setting**
+#### Audio
+**Upbeat Happy Corperate MP3**
 - Source: https://www.pexels.com/video/close-up-of-a-person-holding-a-handful-of-small-fruits-8745407/
 - Author: Roman Odintsov
-- Licence URL: https://www.pexels.com/license/
+- Licence URL: https://pixabay.com/service/terms/
+
 Used for:
-- Tutorial video placeholder
+- Tutorial video music - was converted to MP4 with AAC encoding.
 
 ## Tree GeoJson
-- Source: https://opendata-christchurchcity.hub.arcgis.com/datasets/0c557c04453e435ba1e50389db0ede90_0/explore?filters=eyJDb21tb25OYW1lIjpbIkFsbW9uZCIsIkFwcGxlIiwiUGVhciIsIlN0cmF3YmVycnkgVHJlZSIsIldhbG51dCJdfQ%3D%3D&showTable=true
-- Author: Christchurch City Council
+- Source: https://pixabay.com/music/corporate-upbeat-happy-corporate-487426/
+- Author: kornevmusic
 - License: CC BY 4.0 License
+
 Used for:
 - Creating a new mock dataset of fruit trees based on the same geojson features to be used as mock data.
 **See the readme for a better overview as to how this tree database resource was used in this FruitForager Iteration 2 Prototype:**
