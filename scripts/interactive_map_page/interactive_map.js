@@ -25,6 +25,7 @@ export default class InteractiveMap {
                 minZoom: 12,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <br> “FruitForager” &copy; 2026 by <a href="https://github.com/EthanGJFrench">Ethan French</a><br> is licensed under <a href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a>.',
             }).addTo(this.map)
+            
         this.map.on("zoomend", () => { // add zoom event listener to the map
                 this.renderTrees()
         })
@@ -76,76 +77,76 @@ export default class InteractiveMap {
 
     renderTreeMarker(tree, zoom) {
 
-    const [LNG, LAT] = tree.geometry.coordinates
-    const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName)
+        const [LNG, LAT] = tree.geometry.coordinates
+        const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName)
 
-    const MARKER_POPUP_CONTENT = 
-        `
-        <h3>${tree.properties.CommonName}</h3>
-        <p>${tree.properties.Species}</p>
-        <p>Location: ${LAT}, ${LNG}</p>
-        <p>Tree age: ${tree.properties.AgeClass}</p>
-        <p>Tree height: ${tree.properties.Height}M</p>
-        <a href="https://www.google.com/maps?q=${LAT},${LNG}" target="_blank">
-            <button class="btn btn-primary bg-gradient">Take me there!</button>
-        </a>
-        `
+        const MARKER_POPUP_CONTENT = 
+            `
+            <h3>${tree.properties.CommonName}</h3>
+            <p>${tree.properties.Species}</p>
+            <p>Location: ${LAT}, ${LNG}</p>
+            <p>Tree age: ${tree.properties.AgeClass}</p>
+            <p>Tree height: ${tree.properties.Height}M</p>
+            <a href="https://www.google.com/maps?q=${LAT},${LNG}" target="_blank">
+                <button class="btn btn-primary bg-gradient">Take me there!</button>
+            </a>
+            `
 
-    const MAP_ZOOM = {
-        12: 10,
-        13: 14,
-        14: 20,
-        15: 30,
-        16: 38,
-        17: 44
+        const MAP_ZOOM = {
+            12: 10,
+            13: 14,
+            14: 20,
+            15: 30,
+            16: 38,
+            17: 44
+        }
+
+        const clampedZoom = Math.max(12, Math.min(17, zoom))
+
+        const lowerZoom = Math.floor(clampedZoom)
+        const upperZoom = Math.ceil(clampedZoom)
+
+        const lowerSize = MAP_ZOOM[lowerZoom]
+        const upperSize = MAP_ZOOM[upperZoom]
+
+        let size
+        if (lowerZoom === upperZoom || upperSize === undefined) {
+            size = lowerSize;
+        } else {
+            const t = clampedZoom - lowerZoom;
+            size = lowerSize + (upperSize - lowerSize) * t
+        }
+
+        const ICON = L.divIcon({
+            className: "ff-tree-marker",
+            html: `
+                <div class="tree-marker-wrapper">
+                    <img src="./assets/svgs/map_icons/${TREECOMMONNAME}.svg" />
+                </div>
+            `,
+            iconSize: [size, size],
+            iconAnchor: [size / 2, size / 2]
+        })
+
+        const marker = L.marker([LAT, LNG], {
+            icon: ICON
+        })
+
+        marker.bindPopup(MARKER_POPUP_CONTENT, {
+            autoClose: false,
+            closeOnClick: true
+        })
+
+        marker.on("click", () => {
+            this.map.panTo(marker.getLatLng())
+
+            setTimeout(() => {
+                marker.openPopup()
+            }, 100)
+        })
+
+        return marker
     }
-
-    const clampedZoom = Math.max(12, Math.min(17, zoom))
-
-    const lowerZoom = Math.floor(clampedZoom)
-    const upperZoom = Math.ceil(clampedZoom)
-
-    const lowerSize = MAP_ZOOM[lowerZoom]
-    const upperSize = MAP_ZOOM[upperZoom]
-
-    let size
-    if (lowerZoom === upperZoom || upperSize === undefined) {
-        size = lowerSize;
-    } else {
-        const t = clampedZoom - lowerZoom;
-        size = lowerSize + (upperSize - lowerSize) * t
-    }
-
-    const ICON = L.divIcon({
-        className: "ff-tree-marker",
-        html: `
-            <div class="tree-marker-wrapper">
-                <img src="./assets/svgs/map_icons/${TREECOMMONNAME}.svg" />
-            </div>
-        `,
-        iconSize: [size, size],
-        iconAnchor: [size / 2, size / 2]
-    })
-
-    const marker = L.marker([LAT, LNG], {
-        icon: ICON
-    })
-
-    marker.bindPopup(MARKER_POPUP_CONTENT, {
-        autoClose: false,
-        closeOnClick: true
-    })
-
-    marker.on("click", () => {
-        this.map.panTo(marker.getLatLng())
-
-        setTimeout(() => {
-            marker.openPopup()
-        }, 100)
-    })
-
-    return marker
-}
 
     addTreeToMap(tree) {
         const ZOOM = this.map.getZoom()
