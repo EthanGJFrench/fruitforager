@@ -16,38 +16,41 @@ export default class InteractiveMap {
      * Adds toggleSelectAll() eventListenter to selectAllTrees checkbox DOM element.
      */
     constructor() {
-        this.map = L.map('map', { zoomControl: false }).setView([-43.532, 172.636], 12) // create map
+        this.map = L.map('map', { zoomControl: false }).setView([-43.532, 172.636], 12) // create map.
             L.control.zoom({
                 position: 'bottomright'
             }).addTo(this.map)
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { // add OpenStreetMap Tiles
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { // add OpenStreetMap Tiles.
                 maxZoom: 17,
                 minZoom: 12,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <br> “FruitForager” &copy; 2026 by <a href="https://github.com/EthanGJFrench">Ethan French</a><br> is licensed under <a href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a>.',
             }).addTo(this.map)
-            
-        this.map.on("zoomend", () => { // add zoom event listener to the map
+
+        this.map.on("zoomend", () => { // add zoom event listener to the map.
                 this.renderTrees()
         })
 
         this.treeSelectMenu = new TreeSelectMenu()
-        this.treeSelectMenu.treeFilterForm.addEventListener("change", () => { // renders tree options when form state changes
+        this.treeSelectMenu.treeFilterForm.addEventListener("change", () => { // renders trees when form state changes. 
               this.renderTrees()
         })
-        this.treeSelectMenu.treeFilterForm.addEventListener("reset", () => { // resets the form when
+        this.treeSelectMenu.treeFilterForm.addEventListener("reset", () => { 
             setTimeout(() => {
                 this.renderTrees()
             }, 0)
         })
 
-        this.map.on('zoomend', () => { // TEMP!
-            console.log('Zoom:', this.map.getZoom())
-        })
-
-        this.treeMarkers = [] // stores the information of markers currently rendered on the map  
-        this.renderTrees() // render once on map creation - prevents bugs when refreshing the page with the treeselect options being selected
+        this.treeMarkers = [] // stores the information of markers currently rendered on the map.
+        this.renderTrees() // render once on map creation - prevents bugs when refreshing the page with the treeselect options being selected.
     }
 
+
+    /**
+     * Normalises a string by removing all whitespace and transforming characters to lowercase.
+     *  
+     * @throws { console error } If string pram cannot be normalised (prevents other datatypes from being used).
+     *  @param { string } the string to be normalised .
+     */
     normaliseString(string) {
         try {
             return string.replace(/\s+/g, "").toLowerCase()
@@ -59,11 +62,11 @@ export default class InteractiveMap {
 
     /**
      * Gets the JSON data from tree GeoJSON file. 
-     * 
      * Uses a fetch promise to get the GeoJSON data.
      * Console logs an error if the fetch fails.
      * 
-     * @return {object: tree GEOJSON, else console.error} retruns GeoJSON object with tree information, else console error if data cannot be fetched.
+     * @throws { console error } If data be fetch fails. 
+     * @return { object: tree GEOJSON } retruns GeoJSON object with tree information.
      */
     async getGeoJsonPromise() {
         try {
@@ -75,7 +78,15 @@ export default class InteractiveMap {
         }  
     }
 
-    renderTreeMarker(tree, zoom) {
+    /**
+     * Creates the markers on the leaflet map and controls their size based on the user's map zoom.
+     * 
+     * @param { tree } The tree GeoJSON object to be rendered on the map.
+     * @param { zoom } The leaflet zoom of the map.
+     * 
+     * @return { Leaflet tree marker }
+     */
+    createTreeMarker(tree, zoom) { 
 
         const [LNG, LAT] = tree.geometry.coordinates
         const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName)
@@ -101,20 +112,20 @@ export default class InteractiveMap {
             17: 44
         }
 
-        const clampedZoom = Math.max(12, Math.min(17, zoom))
+        const CLAMPED_ZOOM = Math.max(12, Math.min(17, zoom))
 
-        const lowerZoom = Math.floor(clampedZoom)
-        const upperZoom = Math.ceil(clampedZoom)
+        const LOWER_ZOOM = Math.floor(CLAMPED_ZOOM)
+        const UPPER_ZOOM = Math.ceil(CLAMPED_ZOOM)
 
-        const lowerSize = MAP_ZOOM[lowerZoom]
-        const upperSize = MAP_ZOOM[upperZoom]
+        const LOWER_SIZE = MAP_ZOOM[LOWER_ZOOM]
+        const UPPER_SIZE = MAP_ZOOM[UPPER_ZOOM]
 
         let size
-        if (lowerZoom === upperZoom || upperSize === undefined) {
-            size = lowerSize;
+        if (LOWER_ZOOM === UPPER_ZOOM || UPPER_SIZE === undefined) {
+            size = LOWER_SIZE;
         } else {
-            const t = clampedZoom - lowerZoom;
-            size = lowerSize + (upperSize - lowerSize) * t
+            const t = CLAMPED_ZOOM - LOWER_ZOOM;
+            size = LOWER_SIZE + (UPPER_SIZE - LOWER_SIZE) * t
         }
 
         const ICON = L.divIcon({
@@ -148,37 +159,47 @@ export default class InteractiveMap {
         return marker
     }
 
+    /**
+     * Adds leaflet tree markers to the map.
+     * 
+     * @param {tree} tree GeoJSON to be rendered on the map.
+     */
     addTreeToMap(tree) {
         const ZOOM = this.map.getZoom()
-        const MARKER = this.renderTreeMarker(tree, ZOOM)
+        const MARKER = this.createTreeMarker(tree, ZOOM)
         MARKER.treeData = tree
 
-        MARKER.addTo(this.map) // add marker to map
-        this.treeMarkers.push(MARKER) // push marker to the list of markers currently rendered on the map
+        MARKER.addTo(this.map) // add marker to map.
+        this.treeMarkers.push(MARKER) // push marker to the list of markers currently rendered on the map.
     }
     
+    /**
+     * Gets the users from data and renders the trees on the map.
+     * 
+     * @returns if no form data
+     */
     async renderTrees() {
 
-        this.treeMarkers.forEach(marker => { // remove old markers before each render
+        this.treeMarkers.forEach(marker => { // remove old markers before each render.
             this.map.removeLayer(marker)
         }) 
-        this.treeMarkers = [] // empty array of currently rendered markers
+        this.treeMarkers = [] // empty array of currently rendered markers.
 
-        const TREEFORMDATA = this.treeSelectMenu.getFormData() // get current form data
+        const TREEFORMDATA = this.treeSelectMenu.getFormData() // get current form data.
 
-        if (!TREEFORMDATA) { // throw error if no form data
+        if (!TREEFORMDATA) { // throw error if no form data.
             console.error('No fruit trees selected!')
             return
         }
 
         const TREEFORMDATANORMALISED = TREEFORMDATA.map(treeOption => this.normaliseString(treeOption))
 
-        const TREEDATA = await this.getGeoJsonPromise() // get and iterate through each tree in dataset
+        const TREEDATA = await this.getGeoJsonPromise() // get and iterate through each tree in dataset.
         TREEDATA.features.forEach(tree => {
 
-            const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName) // normalise the tree's CommonName value
+            const TREECOMMONNAME = this.normaliseString(tree.properties.CommonName) // normalise the tree's CommonName value.
 
-            if (TREEFORMDATANORMALISED.includes(TREECOMMONNAME)) { // add tree to map if commonname exists in form data
+            if (TREEFORMDATANORMALISED.includes(TREECOMMONNAME)) { // add tree to map if commonname exists in form data.
                 this.addTreeToMap(tree)
             }
         })
